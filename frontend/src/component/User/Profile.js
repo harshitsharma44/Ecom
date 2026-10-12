@@ -22,8 +22,11 @@ const Profile = ({ history }) => {
           <MetaData title={`${user.name}'s Profile`} />
           <div className="profileContainer">
             <div>
+              <p className="profileEyebrow">Your Ecomify account</p>
               <h1>My Profile</h1>
-              <img src={user.avatar.url} alt={user.name} />
+              <p className="profileIntro">
+                Manage your details and keep your account up to date.
+              </p>
               <Link to="/me/update">Edit Profile</Link>
             </div>
             <div>

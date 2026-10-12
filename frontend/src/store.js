@@ -1,6 +1,5 @@
-import { createStore, combineReducers, applyMiddleware } from "redux";
-import thunk from "redux-thunk";
-import { composeWithDevTools } from "redux-devtools-extension";
+import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers } from "redux";
 import {
   newProductReducer,
   newReviewReducer,
@@ -49,7 +48,7 @@ const reducer = combineReducers({
   review: reviewReducer,
 });
 
-let initialState = {
+const initialState = {
   cart: {
     cartItems: localStorage.getItem("cartItems")
       ? JSON.parse(localStorage.getItem("cartItems"))
@@ -60,12 +59,9 @@ let initialState = {
   },
 };
 
-const middleware = [thunk];
-
-const store = createStore(
+const store = configureStore({
   reducer,
-  initialState,
-  composeWithDevTools(applyMiddleware(...middleware))
-);
+  preloadedState: initialState,
+});
 
 export default store;

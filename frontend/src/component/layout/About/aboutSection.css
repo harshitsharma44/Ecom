@@ -1,124 +1,155 @@
 .aboutSection {
-  height: 100vh;
-  width: 100vw;
-  max-width: 100%;
-  background-color: white;
-  display: grid;
-  grid-template-columns: 4fr 4fr;
-  position: fixed;
-}
-
-.aboutSectionGradient {
-  background-image: linear-gradient(
-    to bottom right,
-    rgb(78, 81, 255),
-    rgb(74, 137, 189)
-  );
+  width: 100%;
+  padding: 62px var(--page-gutter) 84px;
+  background: var(--color-paper);
 }
 
 .aboutSectionContainer {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  background-color: rgb(255, 255, 255);
-  width: 80vw;
-  height: 80vh;
-  transform: translateX(-50%) translateY(-50%);
-  box-shadow: -10px 10px 10px rgba(0, 0, 0, 0.192);
+  width: min(100%, 1040px);
+  margin: 0 auto;
+  padding: 46px clamp(24px, 6vw, 72px);
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+  background: var(--color-surface);
+  box-shadow: 0 18px 50px rgba(23, 37, 43, 0.07);
+}
 
+.aboutSectionIntro {
+  max-width: 660px;
+  padding-bottom: 34px;
+}
+
+.aboutEyebrow.MuiTypography-root {
+  margin: 0 0 12px;
+  color: var(--color-accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.aboutSectionIntro h1.MuiTypography-root {
+  margin: 0;
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.aboutDescription.MuiTypography-root {
+  max-width: 590px;
+  margin-top: 16px;
+  color: var(--color-muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.aboutSectionContent {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 0.8fr);
+  align-items: center;
+  gap: 40px;
+  padding-top: 30px;
+  border-top: 1px solid var(--color-line);
+}
+
+.founderProfile {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.founderPortrait.MuiAvatar-root {
+  width: 104px;
+  height: 104px;
+  flex: 0 0 104px;
+  border: 3px solid #ffffff;
+  box-shadow: 0 0 0 1px var(--color-line), 0 8px 22px rgba(23, 37, 43, 0.12);
+}
+
+.founderProfile h2.MuiTypography-root {
+  margin: 0 0 6px;
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.founderProfile p.MuiTypography-root {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+.aboutSocials {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.aboutSocials h2.MuiTypography-root {
+  margin: 0 0 6px;
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.aboutSocials a {
+  display: inline-flex;
+  min-height: 38px;
   align-items: center;
+  gap: 10px;
+  color: var(--color-muted);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 150ms ease, transform 150ms ease;
 }
 
-.aboutSectionContainer > h1 {
-  font: 400 3vmax "Roboto";
-  color: tomato;
-  margin: 2vmax;
+.aboutSocials a svg {
+  width: 18px;
+  color: var(--color-accent);
+  font-size: 17px;
 }
 
-.aboutSectionContainer > div {
-  display: flex;
-  width: 100%;
+.aboutSocials a:hover {
+  transform: translateX(3px);
+  color: var(--color-accent-deep);
 }
 
-.aboutSectionContainer > div > div {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2vmax;
-  box-sizing: border-box;
-}
-
-.aboutSectionContainer > div > div > p {
-  color: rgba(0, 0, 0, 0.623);
-  font: 100 1vmax "Roboto";
-}
-
-.aboutSectionContainer > div > div > button {
-  margin: 1vmax 0;
-}
-
-.aboutSectionContainer > div > div > span {
-  font: 100 1vmax "Roboto";
-  color: rgba(0, 0, 0, 0.616);
-  text-align: center;
-  width: 80%;
-}
-
-.aboutSectionContainer2 {
-  border-left: 1px solid rgba(0, 0, 0, 0.116);
-}
-
-.aboutSectionContainer2 > h2 {
-  color: rgba(0, 0, 0, 0.623);
-  font: 100 2vmax "Roboto";
-  margin: 2vmax;
-}
-
-.aboutSectionContainer2 > a > svg {
-  font-size: 4vmax;
-}
-
-.youtubeSvgIcon {
-  color: tomato;
-}
-
-.instagramSvgIcon {
-  color: rgb(144, 81, 202);
-}
-
-@media screen and (max-width: 600px) {
-  .aboutSectionContainer > div {
-    display: block;
+@media (max-width: 640px) {
+  .aboutSection {
+    padding: 32px 16px 52px;
   }
 
-  .aboutSectionContainer > h1 {
-    font: 400 5vmax "Roboto";
-    margin: 3vmax;
+  .aboutSectionContainer {
+    padding: 30px 24px;
   }
 
-  .aboutSectionContainer > div > div > p {
-    font: 100 2vmax "Roboto";
+  .aboutSectionIntro {
+    padding-bottom: 26px;
   }
 
-  .aboutSectionContainer > div > div > span {
-    font: 100 1.4vmax "Roboto";
-    width: 70%;
+  .aboutSectionIntro h1.MuiTypography-root {
+    font-size: 34px;
   }
 
-  .aboutSectionContainer2 {
-    border-left: none;
+  .aboutDescription.MuiTypography-root {
+    font-size: 14px;
   }
 
-  .aboutSectionContainer2 > h2 {
-    font: 100 3vmax "Roboto";
-    margin: 2vmax;
+  .aboutSectionContent {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding-top: 25px;
   }
 
-  .aboutSectionContainer2 > a > svg {
-    font-size: 6vmax;
-    margin: 1vmax;
+  .founderPortrait.MuiAvatar-root {
+    width: 84px;
+    height: 84px;
+    flex-basis: 84px;
   }
 }

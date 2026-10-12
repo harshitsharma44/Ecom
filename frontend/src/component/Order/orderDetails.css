@@ -54,7 +54,12 @@
 }
 
 .orderDetailsCartItemsContainer > div > img {
-  width: 3vmax;
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+  border-radius: 4px;
+  background: #f1f5f5;
+  object-fit: contain;
 }
 
 .orderDetailsCartItemsContainer > div > a {
@@ -95,7 +100,9 @@
   }
 
   .orderDetailsCartItemsContainer > div > img {
-    width: 10vw;
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
   }
 
   .orderDetailsCartItemsContainer > div > a {

@@ -1,129 +1,132 @@
 .profileContainer {
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-  position: fixed;
-  top: 0%;
-  left: 0%;
-  max-width: 100%;
-  background-color: white;
+  display: grid;
+  width: min(calc(100% - 40px), 1080px);
+  min-height: 520px;
+  grid-template-columns: minmax(260px, 0.85fr) 1.15fr;
+  margin: 54px auto 76px;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+  background: var(--color-surface);
+  box-shadow: 0 18px 50px rgba(23, 37, 43, 0.08);
 }
 
-.profileContainer > div {
+.profileContainer > div:first-child {
   display: flex;
-  height: 100vh;
-  width: 100vw;
-  max-width: 100%;
   flex-direction: column;
+  align-items: flex-start;
   justify-content: center;
-  align-items: center;
+  padding: 52px;
+  background: #e7f1f1;
+}
+
+.profileEyebrow {
+  margin: 0 0 14px;
+  color: var(--color-accent-deep);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .profileContainer > div:first-child > h1 {
-  color: rgba(0, 0, 0, 0.555);
-  font: 500 2.2vmax "Roboto";
-  transform: translateX(-10vmax) translateY(-2vmax);
+  margin: 0;
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: 38px;
+  line-height: 1.1;
 }
 
-.profileContainer > div:first-child > img {
-  width: 20vmax;
-  border-radius: 100%;
-  transition: all 0.5s;
+.profileIntro {
+  max-width: 280px;
+  margin: 16px 0 26px;
+  color: var(--color-muted);
+  font-size: 14px;
+  line-height: 1.6;
 }
 
-.profileContainer > div:first-child > img:hover {
-  transform: scale(1.05);
-}
-
-.profileContainer > div:first-child > a {
-  border: none;
-  background-color: tomato;
-  font: 400 1vmax "Roboto";
+.profileContainer > div:first-child > a,
+.profileContainer > div:last-child > div:last-child > a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  border: 1px solid var(--color-accent);
+  border-radius: 4px;
+  background: var(--color-accent);
   color: white;
+  font-size: 12px;
+  font-weight: 700;
   text-decoration: none;
-  padding: 0.5vmax;
-  width: 30%;
-  margin: 4vmax;
-  text-align: center;
-  transition: all 0.5s;
+  transition: background 160ms ease, transform 160ms ease;
 }
 
-.profileContainer > div:first-child > a:hover {
-  background-color: rgb(204, 78, 56);
+.profileContainer > div:first-child > a:hover,
+.profileContainer > div:last-child > div:last-child > a:hover {
+  transform: translateY(-1px);
+  background: var(--color-accent-deep);
 }
 
 .profileContainer > div:last-child {
-  justify-content: space-evenly;
-  align-items: flex-start;
-  padding: 5vmax;
-  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 27px;
+  padding: 48px 56px;
+}
+
+.profileContainer > div:last-child > div:not(:last-child) {
+  padding-bottom: 17px;
+  border-bottom: 1px solid var(--color-line);
 }
 
 .profileContainer > div:last-child > div > h4 {
-  color: black;
-  font: 400 1.2vmax "Roboto";
+  margin: 0 0 7px;
+  color: var(--color-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .profileContainer > div:last-child > div > p {
-  color: rgba(0, 0, 0, 0.418);
-  font: 400 1vmax cursive;
-  margin: 0.2vmax;
+  margin: 0;
+  color: var(--color-ink);
+  font-size: 15px;
+  font-weight: 600;
 }
 
 .profileContainer > div:last-child > div:last-child {
   display: flex;
-  flex-direction: column;
-  width: 60%;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
 }
 
 .profileContainer > div:last-child > div:last-child > a {
-  border: none;
-  background-color: rgb(68, 68, 68);
-  font: 400 1vmax "Roboto";
-  color: white;
-  text-decoration: none;
-  padding: 0.5vmax;
-  text-align: center;
-  transition: all 0.5s;
-  margin: 1vmax 0;
+  min-height: 40px;
+  padding: 0 15px;
 }
 
-.profileContainer > div:last-child > div:last-child > a:hover {
-  background-color: rgb(31, 31, 31);
-}
-
-@media screen and (max-width: 600px) {
+@media (max-width: 700px) {
   .profileContainer {
-    flex-direction: column;
+    width: min(calc(100% - 32px), 520px);
+    grid-template-columns: 1fr;
+    margin: 28px auto 48px;
+  }
+
+  .profileContainer > div:first-child {
+    padding: 32px 26px;
   }
 
   .profileContainer > div:first-child > h1 {
-    font: 500 3.2vmax "Roboto";
-    transform: translateY(-2vmax);
-  }
-
-  .profileContainer > div:first-child > a {
-    font: 400 1.7vmax "Roboto";
-    padding: 1vmax;
+    font-size: 32px;
   }
 
   .profileContainer > div:last-child {
-    text-align: center;
-    align-items: center;
-  }
-
-  .profileContainer > div:last-child > div > h4 {
-    font: 400 2.5vmax "Roboto";
-  }
-
-  .profileContainer > div:last-child > div > p {
-    font: 400 2vmax cursive;
-    margin: 0.5vmax 0;
-  }
-
-  .profileContainer > div:last-child > div:last-child > a {
-    font: 400 1.8vmax "Roboto";
-    padding: 1vmax;
-    margin: 2vmax 0;
+    gap: 21px;
+    padding: 30px 26px;
   }
 }

@@ -17,15 +17,24 @@ const MyOrders = () => {
 
   const { loading, error, orders } = useSelector((state) => state.myOrders);
   const { user } = useSelector((state) => state.user);
+  const orderList = orders || [];
 
   const columns = [
-    { field: "id", headerName: "Order ID", minWidth: 300, flex: 1 },
+    {
+      field: "id",
+      headerName: "Order reference",
+      minWidth: 150,
+      flex: 1,
+      renderCell: (params) => (
+        <span title={params.value}>#{String(params.value).slice(-8)}</span>
+      ),
+    },
 
     {
       field: "status",
       headerName: "Status",
-      minWidth: 150,
-      flex: 0.5,
+      minWidth: 125,
+      flex: 0.6,
       cellClassName: (params) => {
         return params.getValue(params.id, "status") === "Delivered"
           ? "greenColor"
@@ -34,26 +43,24 @@ const MyOrders = () => {
     },
     {
       field: "itemsQty",
-      headerName: "Items Qty",
+      headerName: "Items",
       type: "number",
-      minWidth: 150,
-      flex: 0.3,
+      minWidth: 90,
+      flex: 0.4,
     },
 
     {
       field: "amount",
       headerName: "Amount",
-      type: "number",
-      minWidth: 270,
-      flex: 0.5,
+      minWidth: 135,
+      flex: 0.6,
     },
 
     {
       field: "actions",
-      flex: 0.3,
       headerName: "Actions",
-      minWidth: 150,
-      type: "number",
+      minWidth: 90,
+      flex: 0.35,
       sortable: false,
       renderCell: (params) => {
         return (
@@ -66,13 +73,16 @@ const MyOrders = () => {
   ];
   const rows = [];
 
-  orders &&
-    orders.forEach((item, index) => {
+    orderList.forEach((item) => {
       rows.push({
         itemsQty: item.orderItems.length,
         id: item._id,
         status: item.orderStatus,
-        amount: item.totalPrice,
+        amount: new Intl.NumberFormat("en-IN", {
+          style: "currency",
+          currency: "INR",
+          maximumFractionDigits: 0,
+        }).format(item.totalPrice || 0),
       });
     });
 
@@ -93,16 +103,33 @@ const MyOrders = () => {
         <Loader />
       ) : (
         <div className="myOrdersPage">
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            pageSize={10}
-            disableSelectionOnClick
-            className="myOrdersTable"
-            autoHeight
-          />
+          <header className="myOrdersHeader">
+            <div>
+              <p className="myOrdersEyebrow">Your account</p>
+              <Typography id="myOrdersHeading" component="h1">
+                Your orders
+              </Typography>
+              <p className="myOrdersDescription">
+                Review purchases and open an order to see its delivery details.
+              </p>
+            </div>
+            <span className="myOrdersCount">
+              {orderList.length} {orderList.length === 1 ? "order" : "orders"}
+            </span>
+          </header>
 
-          <Typography id="myOrdersHeading">{user.name}'s Orders</Typography>
+          <section className="myOrdersTableFrame" aria-label="Order history">
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              pageSize={8}
+              rowsPerPageOptions={[8, 10, 20]}
+              disableSelectionOnClick
+              className="myOrdersTable"
+              autoHeight
+              rowHeight={58}
+            />
+          </section>
         </div>
       )}
     </Fragment>

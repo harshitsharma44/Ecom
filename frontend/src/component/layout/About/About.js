@@ -1,46 +1,67 @@
 import React from "react";
 import "./aboutSection.css";
-import { Button, Typography, Avatar } from "@material-ui/core";
-import YouTubeIcon from "@material-ui/icons/YouTube";
-import InstagramIcon from "@material-ui/icons/Instagram";
+import { Typography, Avatar } from "@material-ui/core";
+import { useSelector } from "react-redux";
+import { FaInstagram, FaLinkedinIn, FaYoutube } from "react-icons/fa";
+import profilePlaceholder from "../../../images/Profile.png";
+
 const About = () => {
-  const visitInstagram = () => {
-    window.location = "https://instagram.com/meabhisingh";
-  };
+  const { user } = useSelector((state) => state.user);
+  const portrait = user && user.avatar && user.avatar.url
+    ? user.avatar.url
+    : profilePlaceholder;
+
   return (
     <div className="aboutSection">
-      <div></div>
-      <div className="aboutSectionGradient"></div>
       <div className="aboutSectionContainer">
-        <Typography component="h1">About Us</Typography>
+        <div className="aboutSectionIntro">
+          <Typography component="p" className="aboutEyebrow">
+            The person behind Ecomify
+          </Typography>
+          <Typography component="h1">About me</Typography>
+          <Typography component="p" className="aboutDescription">
+            I’m Harshit Sharma, the creator of Ecomify. This project brings
+            together my interest in full-stack development and thoughtful
+            online shopping.
+          </Typography>
+        </div>
 
-        <div>
-          <div>
+        <div className="aboutSectionContent">
+          <div className="founderProfile">
             <Avatar
-              style={{ width: "10vmax", height: "10vmax", margin: "2vmax 0" }}
-              src="https://res.cloudinary.com/tripleayt/image/upload/v1631555947/products/jpyibarlaxawvcvqjv5b.png"
-              alt="Founder"
+              className="founderPortrait"
+              src={portrait}
+              alt="Harshit Sharma"
             />
-            <Typography>Abhishek Singh</Typography>
-            <Button onClick={visitInstagram} color="primary">
-              Visit Instagram
-            </Button>
-            <span>
-              This is a sample wesbite made by @meabhisingh. Only with the
-              purpose to teach MERN Stack on the channel 6 Pack Programmer
-            </span>
+            <Typography component="h2">Harshit Sharma</Typography>
+            <Typography component="p">Creator &amp; developer</Typography>
           </div>
-          <div className="aboutSectionContainer2">
-            <Typography component="h2">Our Brands</Typography>
-            <a
-              href="https://www.youtube.com/channel/UCO7afj9AUo0zV69pqEYhcjw"
-              target="blank"
-            >
-              <YouTubeIcon className="youtubeSvgIcon" />
-            </a>
 
-            <a href="https://instagram.com/meabhisingh" target="blank">
-              <InstagramIcon className="instagramSvgIcon" />
+          <div className="aboutSocials">
+            <Typography component="h2">Find me online</Typography>
+            <a
+              href="https://www.youtube.com/@harshitsharma716"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <FaYoutube aria-hidden="true" />
+              <span>YouTube</span>
+            </a>
+            <a
+              href="https://www.instagram.com/harshit_123s/?__pwa=1#"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <FaInstagram aria-hidden="true" />
+              <span>Instagram</span>
+            </a>
+            <a
+              href="https://www.linkedin.com/in/harshit-sharma-9299402ab/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <FaLinkedinIn aria-hidden="true" />
+              <span>LinkedIn</span>
             </a>
           </div>
         </div>
