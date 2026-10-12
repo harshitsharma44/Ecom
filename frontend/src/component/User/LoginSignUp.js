@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useState, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import "./LoginSignUp.css";
 import Loader from "../layout/Loader/Loader";
 import { Link } from "react-router-dom";
@@ -12,60 +12,44 @@ import { useAlert } from "react-alert";
 const LoginSignUp = ({ history, location }) => {
   const dispatch = useDispatch();
   const alert = useAlert();
-
-  const { error, loading, isAuthenticated } = useSelector(
-    (state) => state.user
-  );
-
-  const loginTab = useRef(null);
-  const registerTab = useRef(null);
-  const switcherTab = useRef(null);
-
+  const { error, loading, isAuthenticated } = useSelector((state) => state.user);
+  const [activeTab, setActiveTab] = useState("login");
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-
-  const { name, email, password } = user;
-
+  const [user, setUser] = useState({ name: "", email: "", password: "" });
   const [avatar, setAvatar] = useState("/Profile.png");
   const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
+  const { name, email, password } = user;
 
-  const loginSubmit = (e) => {
-    e.preventDefault();
-    dispatch(login(loginEmail, loginPassword));
+  const loginSubmit = (event) => {
+    event.preventDefault();
+    dispatch(login(loginEmail.trim(), loginPassword));
   };
 
-  const registerSubmit = (e) => {
-    e.preventDefault();
-
-    const myForm = new FormData();
-
-    myForm.set("name", name);
-    myForm.set("email", email);
-    myForm.set("password", password);
-    myForm.set("avatar", avatar);
-    dispatch(register(myForm));
+  const registerSubmit = (event) => {
+    event.preventDefault();
+    const form = new FormData();
+    form.set("name", name);
+    form.set("email", email);
+    form.set("password", password);
+    form.set("avatar", avatar);
+    dispatch(register(form));
   };
 
-  const registerDataChange = (e) => {
-    if (e.target.name === "avatar") {
+  const registerDataChange = (event) => {
+    if (event.target.name === "avatar") {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
       const reader = new FileReader();
-
       reader.onload = () => {
         if (reader.readyState === 2) {
           setAvatarPreview(reader.result);
           setAvatar(reader.result);
         }
       };
-
-      reader.readAsDataURL(e.target.files[0]);
+      reader.readAsDataURL(file);
     } else {
-      setUser({ ...user, [e.target.name]: e.target.value });
+      setUser((current) => ({ ...current, [event.target.name]: event.target.value }));
     }
   };
 
@@ -76,122 +60,78 @@ const LoginSignUp = ({ history, location }) => {
       alert.error(error);
       dispatch(clearErrors());
     }
-
-    if (isAuthenticated) {
-      history.push(redirect);
-    }
+    if (isAuthenticated) history.push(redirect);
   }, [dispatch, error, alert, history, isAuthenticated, redirect]);
-
-  const switchTabs = (e, tab) => {
-    if (tab === "login") {
-      switcherTab.current.classList.add("shiftToNeutral");
-      switcherTab.current.classList.remove("shiftToRight");
-
-      registerTab.current.classList.remove("shiftToNeutralForm");
-      loginTab.current.classList.remove("shiftToLeft");
-    }
-    if (tab === "register") {
-      switcherTab.current.classList.add("shiftToRight");
-      switcherTab.current.classList.remove("shiftToNeutral");
-
-      registerTab.current.classList.add("shiftToNeutralForm");
-      loginTab.current.classList.add("shiftToLeft");
-    }
-  };
 
   return (
     <Fragment>
       {loading ? (
         <Loader />
       ) : (
-        <Fragment>
-          <div className="LoginSignUpContainer">
-            <div className="LoginSignUpBox">
-              <div>
-                <div className="login_signUp_toggle">
-                  <p onClick={(e) => switchTabs(e, "login")}>LOGIN</p>
-                  <p onClick={(e) => switchTabs(e, "register")}>REGISTER</p>
-                </div>
-                <button ref={switcherTab}></button>
+        <main className="authPage">
+          <section className="authCard" aria-label="Account access">
+            <aside className="authWelcome">
+              <Link className="authBrand" to="/" aria-label="Ecommerce home">
+                <span className="authBrandMark">E</span>
+                <span>EVERMART</span>
+              </Link>
+              <div className="authWelcomeCopy">
+                <span className="authEyebrow">A better way to shop</span>
+                <h1>Find the things that make life better.</h1>
+                <p>Thoughtful picks, everyday essentials, and a little inspiration for what’s next.</p>
               </div>
-              <form className="loginForm" ref={loginTab} onSubmit={loginSubmit}>
-                <div className="loginEmail">
-                  <MailOutlineIcon />
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    required
-                    value={loginEmail}
-                    onChange={(e) => setLoginEmail(e.target.value)}
-                  />
-                </div>
-                <div className="loginPassword">
-                  <LockOpenIcon />
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    required
-                    value={loginPassword}
-                    onChange={(e) => setLoginPassword(e.target.value)}
-                  />
-                </div>
-                <Link to="/password/forgot">Forget Password ?</Link>
-                <input type="submit" value="Login" className="loginBtn" />
-              </form>
-              <form
-                className="signUpForm"
-                ref={registerTab}
-                encType="multipart/form-data"
-                onSubmit={registerSubmit}
-              >
-                <div className="signUpName">
-                  <FaceIcon />
-                  <input
-                    type="text"
-                    placeholder="Name"
-                    required
-                    name="name"
-                    value={name}
-                    onChange={registerDataChange}
-                  />
-                </div>
-                <div className="signUpEmail">
-                  <MailOutlineIcon />
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    required
-                    name="email"
-                    value={email}
-                    onChange={registerDataChange}
-                  />
-                </div>
-                <div className="signUpPassword">
-                  <LockOpenIcon />
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    required
-                    name="password"
-                    value={password}
-                    onChange={registerDataChange}
-                  />
-                </div>
+              <div className="authWelcomeFooter">
+                <span className="authDot" /> Curated for everyday living
+              </div>
+            </aside>
 
-                <div id="registerImage">
-                  <img src={avatarPreview} alt="Avatar Preview" />
-                  <input
-                    type="file"
-                    name="avatar"
-                    accept="image/*"
-                    onChange={registerDataChange}
-                  />
+            <div className="authPanel">
+              <div className="authMobileBrand">
+                <span className="authBrandMark">E</span> EVERMART
+              </div>
+              <div className="authTabs" role="tablist" aria-label="Account options">
+                <button className={activeTab === "login" ? "authTab isActive" : "authTab"} type="button" role="tab" aria-selected={activeTab === "login"} onClick={() => setActiveTab("login")}>Sign in</button>
+                <button className={activeTab === "register" ? "authTab isActive" : "authTab"} type="button" role="tab" aria-selected={activeTab === "register"} onClick={() => setActiveTab("register")}>Create account</button>
+              </div>
+
+              {activeTab === "login" ? (
+                <div className="authFormWrap" role="tabpanel">
+                  <span className="authEyebrow">WELCOME BACK</span>
+                  <h2>Sign in to your account</h2>
+                  <p className="authIntro">Pick up where you left off.</p>
+                  <form className="authForm" onSubmit={loginSubmit}>
+                    <label className="authField">
+                      <span>Email address</span>
+                      <span className="authInputWrap"><MailOutlineIcon aria-hidden="true" /><input type="email" name="email" autoComplete="email" placeholder="you@example.com" required value={loginEmail} onChange={(event) => setLoginEmail(event.target.value)} /></span>
+                    </label>
+                    <label className="authField">
+                      <span>Password</span>
+                      <span className="authInputWrap"><LockOpenIcon aria-hidden="true" /><input type="password" name="password" autoComplete="current-password" placeholder="Enter your password" required value={loginPassword} onChange={(event) => setLoginPassword(event.target.value)} /></span>
+                    </label>
+                    <div className="authFormMeta"><span>Secure sign in</span><Link to="/password/forgot">Forgot password?</Link></div>
+                    <button className="authSubmit" type="submit">Sign in <span aria-hidden="true">→</span></button>
+                  </form>
+                  <p className="authSwitchPrompt">New to Evermart? <button type="button" onClick={() => setActiveTab("register")}>Create an account</button></p>
                 </div>
-                <input type="submit" value="Register" className="signUpBtn" />
-              </form>
+              ) : (
+                <div className="authFormWrap registerPanel" role="tabpanel">
+                  <span className="authEyebrow">GET STARTED</span>
+                  <h2>Create your account</h2>
+                  <p className="authIntro">Join us for a more personal shopping experience.</p>
+                  <form className="authForm" encType="multipart/form-data" onSubmit={registerSubmit}>
+                    <label className="authField"><span>Your name</span><span className="authInputWrap"><FaceIcon aria-hidden="true" /><input type="text" name="name" autoComplete="name" placeholder="Full name" required value={name} onChange={registerDataChange} /></span></label>
+                    <label className="authField"><span>Email address</span><span className="authInputWrap"><MailOutlineIcon aria-hidden="true" /><input type="email" name="email" autoComplete="email" placeholder="you@example.com" required value={email} onChange={registerDataChange} /></span></label>
+                    <label className="authField"><span>Password</span><span className="authInputWrap"><LockOpenIcon aria-hidden="true" /><input type="password" name="password" autoComplete="new-password" placeholder="Create a password" required value={password} onChange={registerDataChange} /></span></label>
+                    <div className="authAvatarRow"><img src={avatarPreview} alt="Profile preview" /><label className="authAvatarUpload">Add a profile photo<input type="file" name="avatar" accept="image/*" onChange={registerDataChange} /></label></div>
+                    <button className="authSubmit" type="submit">Create account <span aria-hidden="true">→</span></button>
+                  </form>
+                  <p className="authSwitchPrompt">Already have an account? <button type="button" onClick={() => setActiveTab("login")}>Sign in</button></p>
+                </div>
+              )}
+              <p className="authLegal">By continuing, you agree to our <Link to="/about">Terms</Link> and <Link to="/about">Privacy Policy</Link>.</p>
             </div>
-          </div>
-        </Fragment>
+          </section>
+        </main>
       )}
     </Fragment>
   );
